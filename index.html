@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,7 +97,7 @@
         <div id="result"></div>
     </div>
     <script>
-        document.getElementById('download-form').addEventListener('submit', function(e) {
+        document.getElementById('download-form').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const videoUrl = document.getElementById('video-url').value;
@@ -108,14 +108,35 @@
                 return;
             }
 
-            document.getElementById('result').innerHTML = `
-                Download request received!<br>
-                URL: ${videoUrl}<br>
-                Format: ${format.toUpperCase()}
-            `;
+            try {
+                document.getElementById('result').textContent = "Processing...";
 
-            // Backend or API logic should be added here.
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: videoUrl, format: format })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    document.getElementById('result').textContent = `Error: ${error.error}`;
+                    return;
+                }
+
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `video.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                document.getElementById('result').textContent = "Download completed!";
+            } catch (err) {
+                document.getElementById('result').textContent = `Error: ${err.message}`;
+            }
         });
     </script>
 </body>
-  </html>
+</html>
