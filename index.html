@@ -1,1 +1,121 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .format-options {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .format-options label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Downloader</h1>
+        <p>Enter the YouTube link below to download as MP3 or MP4:</p>
+        <form id="download-form">
+            <input type="url" id="video-url" placeholder="Enter YouTube URL" required>
+            <div class="format-options">
+                <label>
+                    <input type="radio" name="format" value="mp3" checked> MP3
+                </label>
+                <label>
+                    <input type="radio" name="format" value="mp4"> MP4
+                </label>
+            </div>
+            <button type="submit">Download</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('download-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const videoUrl = document.getElementById('video-url').value;
+            const format = document.querySelector('input[name="format"]:checked').value;
+
+            if (!videoUrl) {
+                document.getElementById('result').textContent = "Please enter a valid URL.";
+                return;
+            }
+
+            document.getElementById('result').innerHTML = `
+                Download request received!<br>
+                URL: ${videoUrl}<br>
+                Format: ${format.toUpperCase()}
+            `;
+
+            // Backend or API logic should be added here.
+        });
+    </script>
+</body>
+  </html>
